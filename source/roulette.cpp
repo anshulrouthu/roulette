@@ -14,6 +14,7 @@
  */
 
 #include "roulette.h"
+#include <fstream>
 
 Roulette::Roulette()
 {
@@ -25,7 +26,13 @@ Roulette::~Roulette()
 
 Outcome* Roulette::spin()
 {
-    srand(time(NULL));
-    Outcome* outcome = new Outcome(rand() % 38);
+    std::fstream file;
+    unsigned int buf;
+
+    file.open("/dev/urandom", std::ios::in);
+    file.read((char*)&buf, sizeof(int));
+    file.close();
+
+    Outcome* outcome = new Outcome(buf % 38);
     return outcome;
 }

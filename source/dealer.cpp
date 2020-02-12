@@ -60,17 +60,20 @@ GStatus Dealer::start()
 
                 logString = "\nNumber: " + outcome->getNumberString() + "\tColor: " + outcome->getColorString();
 
-                mLogFile.write(logString.c_str(), logString.size());
-
                 if(bet->satisfied(outcome))
                 {
                     mPlayer.printMsg("\nYou have won: " + std::to_string(bet->getWinningAmount()) + "\n");
                     mPlayer.credit(bet->getWinningAmount());
+
+                    logString += "\tWon:  " + std::to_string(bet->getWinningAmount());
                 }
                 else
                 {
                     mPlayer.printMsg("\nYou have lost: " + std::to_string(bet->getBetAmount()) + "\n");
+                    logString += "\tLost: " + std::to_string(bet->getBetAmount());
                 }
+
+                mLogFile.write(logString.c_str(), logString.size());
 
                 delete bet;
                 delete outcome;
